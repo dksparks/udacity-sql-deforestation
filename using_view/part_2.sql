@@ -17,16 +17,26 @@ data_2016 AS (
     COALESCE(forest_area_sqkm, 0) AS forest_sqkm,
     COALESCE(total_area_sqkm, 0) AS total_sqkm
   FROM forestation WHERE year = 2016
+),
+sums AS(
+  SELECT
+    d1.region,
+    SUM(d1.forest_sqkm) AS forest_sqkm_1990,
+    SUM(d1.total_sqkm) AS total_sqkm_1990,
+    SUM(d2.forest_sqkm) AS forest_sqkm_2016,
+    SUM(d2.total_sqkm) AS total_sqkm_2016
+  FROM data_1990 d1
+  JOIN data_2016 d2 ON d1.code = d2.code
+  GROUP BY region
 )
 SELECT
-  d1.region,
-  SUM(d1.forest_sqkm) AS forest_sqkm_1990,
-  SUM(d1.total_sqkm) AS total_sqkm_1990,
-  SUM(d2.forest_sqkm) AS forest_sqkm_2016,
-  SUM(d2.total_sqkm) AS total_sqkm_2016
-FROM data_1990 d1
-JOIN data_2016 d2 ON d1.code = d2.code
-GROUP BY region ORDER BY region;
+  region,
+  100 * forest_sqkm_1990 / total_sqkm_1990
+    AS forest_pct_1990,
+  100 * forest_sqkm_2016 / total_sqkm_2016
+    AS forest_pct_2016
+FROM sums;
+
 
 
 
@@ -37,10 +47,7 @@ GROUP BY region ORDER BY region;
       decimal places?
 */
 
-SELECT
-  region,
-  100 * forest_sqkm_2016 / total_sqkm_2016
-    AS forest_pct_2016
+SELECT region, forest_pct_2016
 FROM regional_forestation_1990_2016
 ORDER BY forest_pct_2016 DESC;
 
@@ -59,10 +66,7 @@ ORDER BY forest_pct_2016 DESC;
       decimal places?
 */
 
-SELECT
-  region,
-  100 * forest_sqkm_1990 / total_sqkm_1990
-    AS forest_pct_1990
+SELECT region, forest_pct_1990
 FROM regional_forestation_1990_2016
 ORDER BY forest_pct_1990 DESC;
 
@@ -80,15 +84,12 @@ ORDER BY forest_pct_1990 DESC;
       to 2016?
 */
 
-SELECT
-  region,
-  forest_sqkm_1990,
-  forest_sqkm_2016
+SELECT region, forest_pct_1990, forest_pct_2016
 FROM regional_forestation_1990_2016
-WHERE forest_sqkm_1990 > forest_sqkm_2016
+WHERE forest_pct_1990 > forest_pct_2016
   AND region != 'World';
 
 /*
-  Latin America & Caribbean
-  Sub-Saharan Africa
+  Latin America & Caribbean, 51.03 to 46.16
+  Sub-Saharan Africa, 30.67 to 28.79
 */

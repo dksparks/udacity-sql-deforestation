@@ -189,3 +189,66 @@ WHERE forest_pct_2016 > (
 
 
 /* 94 */
+
+
+
+/*
+  This is the end of the questions provided with the
+  project instructions. However, some additional
+  information is needed to fill in the remaining
+  blanks in the report template. I have added some 
+  more questions and their corresponding SQL queries 
+  below.
+*/
+
+
+
+/*
+   f. Which 2 countries saw the largest amount 
+      increase in forest area from 1990 to 2016? What 
+      was the difference in forest area for each?
+*/
+
+SELECT
+  country,
+  forest_sqkm_2016 - forest_sqkm_1990
+    AS forest_sqkm_change
+FROM national_forestation_1990_2016
+WHERE country != 'World'
+AND forest_sqkm_1990 IS NOT NULL
+AND forest_sqkm_2016 IS NOT NULL
+ORDER BY forest_sqkm_change DESC;
+
+/*
+  China, 527229.0619999999
+  United States, 79200
+*/
+
+
+
+/*
+   g. Which country saw the largest percent increase 
+      in forest area from 1990 to 2016? What was the 
+      percent change to 2 decimal places for each?
+*/
+
+SELECT
+  country,
+  region,
+  CASE
+    WHEN forest_sqkm_1990 IS NULL
+      OR forest_sqkm_1990 = 0
+      OR forest_sqkm_2016 IS NULL
+      THEN NULL
+    ELSE 100 * (
+      forest_sqkm_2016 - forest_sqkm_1990
+    ) / forest_sqkm_1990
+  END AS forest_pct_change
+FROM national_forestation_1990_2016
+WHERE country != 'World'
+AND forest_sqkm_1990 IS NOT NULL
+AND forest_sqkm_1990 != 0
+AND forest_sqkm_2016 IS NOT NULL
+ORDER BY forest_pct_change DESC;
+
+/* Iceland, 213.66% */

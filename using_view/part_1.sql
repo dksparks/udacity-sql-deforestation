@@ -104,4 +104,4 @@ SELECT
   )) AS diff
 FROM forestation WHERE year = 2016 ORDER BY diff;
 
-/* Peru */
+/* Peru, 1279999.9891 */
