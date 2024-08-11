@@ -213,6 +213,12 @@ WHERE forestation_level_2016 IS NOT NULL
 GROUP BY forestation_level_2016
 ORDER BY forestation_level_2016 DESC;
 
+/* 
+  group 4:  9
+  group 3: 38
+  group 2: 72
+  group 1: 85
+*/
 /* bottom quartile, below 25% forestation */
 
 
