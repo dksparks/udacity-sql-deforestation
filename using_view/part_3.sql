@@ -43,6 +43,7 @@ JOIN data_2016 d2 ON d1.code = d2.code;
 
 SELECT
   country,
+  region,
   forest_sqkm_2016 - forest_sqkm_1990
     AS forest_sqkm_change
 FROM national_forestation_1990_2016
@@ -155,6 +156,7 @@ ORDER BY forestation_level_2016 DESC;
 
 SELECT
   country,
+  region,
   forest_pct_2016
 FROM national_forestation_1990_2016
 WHERE forest_pct_2016 > 75

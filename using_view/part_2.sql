@@ -37,6 +37,9 @@ SELECT
     AS forest_pct_2016
 FROM sums;
 
+SELECT * FROM regional_forestation_1990_2016
+ORDER BY forest_pct_2016 DESC;
+
 
 
 
